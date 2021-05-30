@@ -5,8 +5,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="DTOs\" />
-    <Folder Include="Services\" />
+    <ProjectReference Include="..\Supplier.Domain\Supplier.Domain.csproj" />
   </ItemGroup>
 
 </Project>

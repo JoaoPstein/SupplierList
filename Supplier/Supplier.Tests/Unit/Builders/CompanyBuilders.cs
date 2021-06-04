@@ -43,5 +43,11 @@ namespace Supplier.Tests.Unit.Builders
             _active = true;
             return this;
         }
+
+        public CompanyBuilders WithId(Guid id )
+        {
+            _id = id;
+            return this;
+        }
     }
 }

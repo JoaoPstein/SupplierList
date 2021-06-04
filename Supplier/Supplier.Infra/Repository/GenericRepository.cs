@@ -37,7 +37,7 @@ namespace Supplier.Infra.Repository
             throw new NotImplementedException();
         }
 
-        public void Update(T entity)
+        public void Update(Guid id, T entity)
         {
             throw new NotImplementedException();
         }

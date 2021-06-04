@@ -3,6 +3,7 @@ using Supplier.Domain.Entities;
 using Supplier.Domain.Interfaces;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace Supplier.Application.Services
@@ -18,37 +19,49 @@ namespace Supplier.Application.Services
 
         public void Create(CompanyRequestDto requestDto)
         {
-            throw new NotImplementedException();
-            //var company = new CompanyEntity(requestDto.FantasyNaame, requestDto.Cnpj, requestDto.UF);
-            //_companyRepository.Create(company);
+            var company = new CompanyEntity(requestDto.FantasyName, requestDto.Cnpj, requestDto.UF);
+            _companyRepository.Create(company);
         }
 
         public async Task Delete(Guid id)
         {
-            //var companyById = await _companyRepository.GetById(id);
-
-            //if (companyById == null)
-            //{
-            //    throw new Exception("Companhia não encontrada.");
-            //}
-
-            //companyById.Disable();
-            throw new NotImplementedException();
+            var companyById = await _companyRepository.GetById(id);
+            companyById.Disable();
+            _companyRepository.Delete(companyById);
         }
 
-        public Task<IList<CompanyResponseDto>> GetAll()
+        public async Task<IList<CompanyResponseDto>> GetAll()
         {
-            throw new NotImplementedException();
+            var getAll = await _companyRepository.GetAll();
+
+            return getAll.Select(x => new CompanyResponseDto()
+            {
+                Active = x.Active,
+                UF = x.Uf,
+                Cnpj = x.Cnpj,
+                FantasyName = x.FantasyName
+            }).ToList();
         }
 
-        public Task<CompanyResponseDto> GetById(Guid id)
+        public async Task<CompanyResponseDto> GetById(Guid id)
         {
-            throw new NotImplementedException();
+            var company = await _companyRepository.GetById(id);
+            return new CompanyResponseDto()
+            {
+                Active = company.Active,
+                Cnpj = company.Cnpj,
+                FantasyName = company.FantasyName,
+                UF = company.Uf,
+            };
         }
 
-        public Task Update(Guid id, CompanyRequestDto requestDto)
+        public async Task Update(Guid id, CompanyRequestDto requestDto)
         {
-            throw new NotImplementedException();
+            var company = await _companyRepository.GetById(id);
+
+            company.Update(requestDto.FantasyName, requestDto.Cnpj, requestDto.UF);
+
+            _companyRepository.Update(id, company);
         }
     }
 }

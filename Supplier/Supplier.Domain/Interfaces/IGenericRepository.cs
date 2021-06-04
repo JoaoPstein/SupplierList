@@ -8,7 +8,7 @@ namespace Supplier.Domain.Interfaces
     public interface IGenericRepository<T> where T : BaseEntity
     {
         void Create(T entity);
-        void Update(T entity);
+        void Update(Guid id, T entity);
         void Delete(T entity);
         Task<IList<T>> GetAll();
         Task<T> GetById(Guid id);

@@ -9,7 +9,7 @@ namespace Supplier.Tests.Unit.Domain.Entities
     public class CompanyEntityTest
     {
         [Fact]
-        public void CreateCompany()
+        public void Should_Create_Company()
         {
             var company = CreateCompany("Teste", "12345678910123", UfEnum.SC);
 
@@ -22,7 +22,7 @@ namespace Supplier.Tests.Unit.Domain.Entities
         }
 
         [Fact]
-        public void DisableCompany()
+        public void Should_Disable_Company()
         {
             var company = CreateCompany("Testando", "12345678910123", UfEnum.AC);
 
@@ -32,7 +32,7 @@ namespace Supplier.Tests.Unit.Domain.Entities
         }
 
         [Fact]
-        public void UpdateCompany()
+        public void Should_Update_Company()
         {
             var company = CreateCompany("Testando", "12345678910123", UfEnum.AL);
 

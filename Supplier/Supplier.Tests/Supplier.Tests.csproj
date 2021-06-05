@@ -23,7 +23,6 @@
 
   <ItemGroup>
     <Folder Include="Unit\Domain\Enum\" />
-    <Folder Include="Unit\Domain\Validations\" />
   </ItemGroup>
 
   <ItemGroup>

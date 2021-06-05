@@ -1,4 +1,5 @@
 ﻿using Supplier.Domain.Enum;
+using Supplier.Domain.Validations;
 
 namespace Supplier.Domain.Entities
 {
@@ -9,6 +10,7 @@ namespace Supplier.Domain.Entities
             FantasyName = fantasyName;
             Cnpj = cnpj;
             Uf = uf;
+            Validate(this, new CompanyValidation());
         }
 
         public void Update(string fantasyName, string cnpj, UfEnum uf)
@@ -16,6 +18,7 @@ namespace Supplier.Domain.Entities
             FantasyName = fantasyName;
             Cnpj = cnpj;
             Uf = uf;
+            Validate(this, new CompanyValidation());
         }
 
         public string FantasyName { get; protected set; }

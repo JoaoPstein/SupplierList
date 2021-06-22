@@ -10,6 +10,7 @@ namespace Supplier.Domain.Entities
             FantasyName = fantasyName;
             Cnpj = cnpj;
             Uf = uf;
+            Active = true;
             Validate(this, new CompanyValidation());
         }
 

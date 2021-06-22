@@ -1,16 +1,16 @@
 ﻿using Supplier.Domain.Entities;
 using System;
-using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace Supplier.Domain.Interfaces
 {
     public interface IGenericRepository<T> where T : BaseEntity
     {
-        void Create(T entity);
-        void Update(Guid id, T entity);
-        void Delete(T entity);
-        Task<IList<T>> GetAll();
+        IQueryable<T> GetAll();
         Task<T> GetById(Guid id);
+        Task Create(T entity);
+        Task Update(Guid id, T entity);
+        Task Delete(Guid id);
     }
 }

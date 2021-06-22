@@ -27,12 +27,12 @@ namespace Supplier.Application.Services
         {
             var companyById = await _companyRepository.GetById(id);
             companyById.Disable();
-            _companyRepository.Delete(companyById);
+            await _companyRepository.Delete(companyById.Id);
         }
 
         public async Task<IList<CompanyResponseDto>> GetAll()
         {
-            var getAll = await _companyRepository.GetAll();
+            var getAll = _companyRepository.GetAll();
 
             return getAll.Select(x => new CompanyResponseDto()
             {

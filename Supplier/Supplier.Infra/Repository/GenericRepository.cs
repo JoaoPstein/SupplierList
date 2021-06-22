@@ -1,8 +1,9 @@
-﻿using Supplier.Domain.Entities;
+﻿using Microsoft.EntityFrameworkCore;
+using Supplier.Domain.Entities;
 using Supplier.Domain.Interfaces;
 using Supplier.Infra.Context;
 using System;
-using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace Supplier.Infra.Repository
@@ -16,30 +17,35 @@ namespace Supplier.Infra.Repository
             _dbContext = dbContext;
         }
 
-
-        public void Create(T entity)
+        public async Task Create(T entity)
         {
-            throw new NotImplementedException();
+            await _dbContext.Set<T>().AddAsync(entity);
+            await _dbContext.SaveChangesAsync();
         }
 
-        public void Delete(T entity)
+        public async Task Delete(Guid id)
         {
-            throw new NotImplementedException();
+            var entity = await GetById(id);
+            _dbContext.Set<T>().Remove(entity);
+            await _dbContext.SaveChangesAsync();
         }
 
-        public Task<IList<T>> GetAll()
+        public IQueryable<T> GetAll()
         {
-            throw new NotImplementedException();
+            return _dbContext.Set<T>().AsNoTracking();
         }
 
-        public Task<T> GetById(Guid id)
+        public async Task<T> GetById(Guid id)
         {
-            throw new NotImplementedException();
+            return await _dbContext.Set<T>()
+              .AsNoTracking()
+              .FirstOrDefaultAsync(e => e.Id == id);
         }
 
-        public void Update(Guid id, T entity)
+        public async Task Update(Guid id, T entity)
         {
-            throw new NotImplementedException();
+            _dbContext.Set<T>().Update(entity);
+            await _dbContext.SaveChangesAsync();
         }
     }
 }

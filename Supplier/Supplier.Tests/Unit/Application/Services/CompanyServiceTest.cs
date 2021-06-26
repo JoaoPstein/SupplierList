@@ -8,6 +8,7 @@ using Supplier.Domain.Interfaces;
 using Supplier.Tests.Unit.Builders;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using Xunit;
 
@@ -44,15 +45,12 @@ namespace Supplier.Tests.Unit.Application.Services
             var companyId = Guid.NewGuid();
             var company = CreateBuilderCompany("Teste", companyId);
 
-             _companyRepository.GetById(companyId).Returns(company);
+            _companyRepository.GetById(companyId).Returns(company);
 
             await _companyService.Delete(companyId);
 
-            _companyRepository.Received(1)
-                .Delete(Arg.Is<CompanyEntity>(x => x.Active == false
-                                                      && x.FantasyName == company.FantasyName
-                                                      && x.Cnpj == company.Cnpj
-                                                      && x.Uf == company.Uf));   
+            await _companyRepository.Received(1)
+                .Delete(companyId);
         }
 
         [Fact]
@@ -68,7 +66,7 @@ namespace Supplier.Tests.Unit.Application.Services
             companys.Add(companyA);
             companys.Add(companyB);
 
-            _companyRepository.GetAll().Returns(companys);
+            _companyRepository.GetAll().Returns(companys.AsQueryable());
 
             var companyReturns = await _companyService.GetAll();
 
@@ -113,7 +111,7 @@ namespace Supplier.Tests.Unit.Application.Services
 
             await _companyService.Update(company.Id, companyUpdate);
 
-            _companyRepository.Received(1).Update(company.Id, Arg.Is<CompanyEntity>(x =>
+            await _companyRepository.Received(1).Update(company.Id, Arg.Is<CompanyEntity>(x =>
                                                                     x.Active == company.Active
                                                                  && x.FantasyName == company.FantasyName
                                                                  && x.Cnpj == company.Cnpj
@@ -124,7 +122,6 @@ namespace Supplier.Tests.Unit.Application.Services
         {
             return new CompanyRequestDto()
             {
-                Id = id,
                 Active = true,
                 Cnpj = "12345678912345",
                 FantasyName = "Teste",

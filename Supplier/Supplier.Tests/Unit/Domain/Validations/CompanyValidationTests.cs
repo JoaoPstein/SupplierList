@@ -27,9 +27,9 @@ namespace Supplier.Tests.Unit.Domain.Validations
         [Fact]
         private void Should_Return_Error_When_Cnpj_Is_Null()
         {
-            var company = CreateCompanyEntity("Teste", "", UfEnum.SC);
+            var company = CreateCompanyEntity("TesteNull", "", UfEnum.SC);
 
-            _companyValidation.ShouldHaveValidationErrorFor(x => x.FantasyName, company)
+            _companyValidation.ShouldHaveValidationErrorFor(x => x.Cnpj, company)
                     .WithErrorMessage("Campo Cnpj não pode ser vazio.");
         }
 
@@ -38,7 +38,7 @@ namespace Supplier.Tests.Unit.Domain.Validations
         {
             var company = CreateCompanyEntity("Teste", "12", UfEnum.SC);
 
-            _companyValidation.ShouldHaveValidationErrorFor(x => x.FantasyName, company)
+            _companyValidation.ShouldHaveValidationErrorFor(x => x.Cnpj, company)
                     .WithErrorMessage("Digite no minimo 14 caracteres.");
         }
 

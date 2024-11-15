@@ -1,4 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Supplier.Domain.Entities;
+using System.Dynamic;
 
 namespace Supplier.Infra.Context
 {
@@ -16,6 +18,7 @@ namespace Supplier.Infra.Context
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.ApplyConfigurationsFromAssembly(typeof(MainContext).Assembly);
+            modelBuilder.HasDefaultSchema("supplier");
         }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
@@ -27,5 +30,7 @@ namespace Supplier.Infra.Context
                     .UseSqlServer("DefaultConnection");
             }
         }
+
+        protected DbSet<CompanyEntity> Company {  get; set; }
     }
 }

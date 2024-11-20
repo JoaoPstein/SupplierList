@@ -1,4 +1,6 @@
+using HealthChecks.UI.Configuration;
 using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Diagnostics.HealthChecks;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -33,6 +35,12 @@ namespace Supplier.Web
             services.AddCors();
 
             services.AddSwaggerGen(c => { c.SwaggerDoc("v1", new OpenApiInfo { Title = "Supplier", Version = "v1" }); });
+            
+            services.AddHealthChecks(); 
+            //Configurando o Health Ckeck
+            services.ConfigureHealthChecks(Configuration); 
+
+            
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
@@ -55,6 +63,19 @@ namespace Supplier.Web
                 }
             }
 
+            //HealthCheck Middleware
+            app.UseHealthChecks( "/api/health" , new HealthCheckOptions() 
+            { 
+                Predicate = _ => true , 
+                ResponseWriter = UIResponseWriter.WriteHealthCheckUIResponse 
+            }); 
+            app.UseHealthChecksUI( delegate (Options options) 
+            { 
+                options.UIPath = "/healthcheck-ui" ; 
+                options.AddCustomStylesheet( "./HealthCheck/Custom.css" ); 
+
+            });
+            
             app.UseMvc();
             app.UseHttpsRedirection();
             app.UseCors(option => option.AllowAnyHeader().AllowAnyMethod().AllowAnyOrigin());

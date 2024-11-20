@@ -8,4 +8,8 @@
     <ProjectReference Include="..\Supplier.Domain\Supplier.Domain.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Compile Remove="Services\CheckServices.cs" />
+  </ItemGroup>
+
 </Project>

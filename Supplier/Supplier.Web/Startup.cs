@@ -64,16 +64,24 @@ namespace Supplier.Web
             }
 
             //HealthCheck Middleware
-            app.UseHealthChecks( "/api/health" , new HealthCheckOptions() 
-            { 
-                Predicate = _ => true , 
-                ResponseWriter = UIResponseWriter.WriteHealthCheckUIResponse 
-            }); 
-            app.UseHealthChecksUI( delegate (Options options) 
-            { 
-                options.UIPath = "/healthcheck-ui" ; 
-                options.AddCustomStylesheet( "./HealthCheck/Custom.css" ); 
-
+            app.MapHealthChecks("/health", new HealthCheckOptions
+            {
+                Predicate = _ => true,
+                ResponseWriter = async (context, report) =>
+                {
+                    context.Response.ContentType = "application/json";
+                    var result = JsonSerializer.Serialize(new
+                    {
+                        status = report.Status.ToString(),
+                        checks = report.Entries.Select(entry => new
+                        {
+                            name = entry.Key,
+                            status = entry.Value.Status.ToString(),
+                            description = entry.Value.Description
+                        })
+                    });
+                    await context.Response.WriteAsync(result);
+                }
             });
             
             app.UseMvc();
